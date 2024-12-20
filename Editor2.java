@@ -14,7 +14,6 @@ public class Editor2 {
 		int width = Integer.parseInt(args[1]);
 		int lenght = Integer.parseInt(args[2]);
 
-
 		Color[][] imageIn = Runigram.read(fileName);
 		Color[][] imageOut = Runigram.scaled(imageIn, width,lenght);
 
@@ -23,7 +22,5 @@ public class Editor2 {
 		StdDraw.pause(3000);
 		Runigram.setCanvas(imageOut);
 		Runigram.display(imageOut);
-
-
 	}
 }
