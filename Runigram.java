@@ -19,6 +19,10 @@ public class Runigram {
 		image = scaled(tinypic, 5,7);
 		System.out.println();
 		print(image);
+
+		Color c1 = new Color(255, 0, 0);  // Red
+		Color c2 = new Color(0, 0, 255); // Blue
+		System.out.println(blend(c1,c2, 0.5 ));
 		
 		//// Write here whatever code you need in order to test your work.
 		//// You can continue using the image array.
@@ -151,7 +155,6 @@ public class Runigram {
 
 		for (int i =0; i < height ; i ++) {
 			for (int j = 0; j < width; j++) {
-
 				int originalI = (int) (i * (originalHeight / (double) height));
 				int originalJ = (int) (j * (originalWidth / (double) width));
 				scaled[i][j] = image[originalI][originalJ];
@@ -166,9 +169,14 @@ public class Runigram {
 	 * v = alpha * v1 + (1 - alpha) * v2, where v1 and v2 are the corresponding r, g, b
 	 * values in the two input color.
 	 */
-	public static Color blend(Color c1, Color c2, double alpha) {
-		//// Replace the following statement with your code
-		return null;
+	public static Color blend (Color c1, Color c2, double alpha) {
+
+		int red = (int) ((c1.getRed() * alpha) + (c2.getRed() * (1-alpha)));
+		int green = (int) ((c1.getGreen() * alpha) + (c2.getGreen() * (1-alpha)));
+		int blue = (int) ((c1.getBlue() * alpha) + (c2.getBlue() * (1-alpha)));
+
+		Color blended =new Color (red, green, blue);
+		return blended;
 	}
 	
 	/**
@@ -178,8 +186,17 @@ public class Runigram {
 	 * The two images must have the same dimensions.
 	 */
 	public static Color[][] blend(Color[][] image1, Color[][] image2, double alpha) {
-		//// Replace the following statement with your code
-		return null;
+
+		int rows = image1.length;
+		int columns = image1[0].length;
+		Color[][] imageBlend = new Color [rows][columns];
+
+		for (int i =0; i < rows ; i ++) {
+			for (int j = 0; j < columns; j++) {
+				imageBlend[i][j] = blend (image1[i][j], image2[i][j], alpha);
+			}
+		}
+		return imageBlend;
 	}
 
 	/**
@@ -189,7 +206,20 @@ public class Runigram {
 	 * of the source image.
 	 */
 	public static void morph(Color[][] source, Color[][] target, int n) {
-		//// Replace this comment with your code
+
+		if ((source.length != target.length) || (source[0].length != target[0].length)) {
+			Color scaledTarget[][] = scaled(target, source[0].length, source.length);
+
+			for (int i = 0; i <= n; i++) {
+				Runigram.display(blend(source,scaledTarget , (double) (n - i) / n));
+				StdDraw.pause(50);
+			}
+		} else {
+			for (int i = 0; i <= n; i++) {
+				Runigram.display(blend(source, target, (double) (n - i) / n));
+				StdDraw.pause(500);
+			}
+		}
 	}
 	
 	/** Creates a canvas for the given image. */
